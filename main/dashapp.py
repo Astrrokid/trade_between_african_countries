@@ -3,7 +3,7 @@ import plotly.express as px  # (version 4.7.0 or higher)
 import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output  # pip install dash (version 2.0.0 or higher)
 import geopandas as gpd
-
+import os
 
 app = Dash(__name__)
 
