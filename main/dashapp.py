@@ -74,12 +74,12 @@ app.layout = html.Div([
 )
 def update_graph(year, country):
 
-    container = f"Exported to {country_mapping[country]} in {year}"
+    container = f"Exports From {country_mapping[country]} to Other Afican Countries, in {year}"
 
     dff = df.copy()
 
-    # Get the 'Import trade _metric Tons' column
-    data = dff['Import trade _metric Tons']
+    # Get the 'Quantity_mt ' column
+    data = dff['Quantity_mt ']
 
     # Fit the data to a normal distribution
     mean_value = np.mean(data)
@@ -116,9 +116,9 @@ def update_graph(year, country):
         hover_text = (
             f"Export from {country_mapping[dff['country1'].iloc[i]]} to {country_mapping[dff['country2'].iloc[i]]}<br>"
             f"Year: {dff['Year'].iloc[i]}<br>"
-            f"Metric Tons: {dff['Import trade _metric Tons'].iloc[i]}<br>"
+            f"Metric Tons: {dff['Quantity_mt '].iloc[i]}<br>"
         )
-        trade_value = dff["Import trade _metric Tons"].iloc[i]
+        trade_value = dff["Quantity_mt "].iloc[i]
         # fig.add_trace(go.Scattergeo(
         
         #     locationmode="ISO-3",
@@ -127,7 +127,7 @@ def update_graph(year, country):
         #     mode="lines",
         #     line=dict(
         #         width=4,
-        #         color="blue" if dff["Import trade _metric Tons"].iloc[i] > 200 else "green"  # Example condition for line color
+        #         color="blue" if dff["Quantity_mt "].iloc[i] > 200 else "green"  # Example condition for line color
         #     ),
         #     #name=f"Export to {dff['country2'].iloc[i]}"
         # ))
@@ -138,7 +138,7 @@ def update_graph(year, country):
             mode="lines+markers",
             line=dict(width=2, color="blue"),
             opacity=0.6
-            #text=f"Export to {dff['country2'].iloc[i]}, Tons: {dff['Import trade _metric Tons'].iloc[i]}",
+            #text=f"Export to {dff['country2'].iloc[i]}, Tons: {dff['Quantity_mt '].iloc[i]}",
             #name=f"Export to {dff['country2'].iloc[i]}"
         ))
 
@@ -166,7 +166,7 @@ def update_graph(year, country):
         #hoverinfo='text',
         #mode='text', 
         colorscale='RdYlGn',# Choose your colorscale
-        customdata=dff['Import trade _metric Tons'],
+        customdata=dff['Quantity_mt '],
         hovertemplate= 
             "Import from %{text}<br>" +
             "Metric Ton: %{customdata}<br>"+ f"Year: {year}",
@@ -174,7 +174,7 @@ def update_graph(year, country):
         # colorbar=dict(
         #     title="Normalized Trade Volume (Metric Tons)",
         #     tickvals=[0, 50, 100],  # Optional: Customize tick values
-        #     ticktext=[dff["Import trade _metric Tons"].min(), dff["Import trade _metric Tons"].median(), dff["Import trade _metric Tons"].max()]  # Optional: Customize tick labels
+        #     ticktext=[dff["Quantity_mt "].min(), dff["Quantity_mt "].median(), dff["Quantity_mt "].max()]  # Optional: Customize tick labels
         # ), # Add a color bar
         ))
 
@@ -185,20 +185,20 @@ def update_graph(year, country):
             lat=[country.geometry.centroid.y],
             text=country['NAME'],  # Country name
             mode="text",
-            textfont=dict(size=10, color="black", family='Arial Black'),
+            textfont=dict(size=10, color="white", family='Arial Black'),
             showlegend=False,
             hoverinfo="skip"
         ))
-    export = dff.groupby(['country1', 'country2'])['Import trade _metric Tons'].sum().reset_index()
-    export= export.sort_values(by='Import trade _metric Tons', ascending=False)
+    export = dff.groupby(['country1', 'country2'])['Quantity_mt '].sum().reset_index()
+    export= export.sort_values(by='Quantity_mt ', ascending=False)
     
     fig2 = go.Figure()
     fig2.add_trace(go.Bar(
         x=export['country1'] + ' to ' +export['country2'],  # Combined country pair names
-        y=export['Import trade _metric Tons'],
+        y=export['Quantity_mt '],
         name="Total Import Metric Tons",
         marker=dict(color='orange'),
-        text=export['Import trade _metric Tons'],
+        text=export['Quantity_mt '],
         textposition='auto',
     ))
     fig.update_geos(
@@ -215,7 +215,7 @@ def update_graph(year, country):
             showcoastlines=True,
             projection_type="natural earth",
         ),
-
+        template= 'plotly_dark',
         height=1000,  # Increase map height
         width=1200
 
@@ -245,4 +245,4 @@ def update_graph(year, country):
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':    
     port = int(os.environ.get('PORT', 5000)) 
-    app.run_server(host='0.0.0.0', port=port)
+    app.run_server(host='0.0.0.0', port=port, debug=True)
