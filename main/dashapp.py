@@ -30,7 +30,7 @@ years = [2009, 2020, 2021, 2010, 2011, 2022, 2003, 2006, 2007, 2008, 2012,
          2013, 2014, 2015, 2016, 2017, 2018, 2019, 2004, 2005]
 
 year_dict_list = [{"label": year, "value": year} for year in sorted(years)]
-country_dict_list = [{"label": country_mapping[country], "value": country} for country in country_mapping]
+country_dict_list = [{"label": country_mapping[country], "value": country} for country in sorted(country_mapping)]
 #df = df.groupby(['State', 'ANSI', 'Affected by', 'Year', 'state_code'])[['Pct of Colonies Impacted']].mean()
 #df.reset_index(inplace=True)
 #print(df[:5])
