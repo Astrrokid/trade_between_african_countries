@@ -4,8 +4,6 @@ import scipy.stats as stats
 import plotly.express as px  # (version 4.7.0 or higher)
 import plotly.graph_objects as go
 from dash import Dash, dcc, html, Input, Output
-from plotly.offline import init_notebook_mode
-init_notebook_mode(connected=True)
 import geopandas as gpd
 import os
 
